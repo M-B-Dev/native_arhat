@@ -1,0 +1,11 @@
+asynckivy
+certifi
+chardet
+idna
+kivymd
+plyer
+pybase64
+requests
+urllib3
+validate_email
+webcolors
