@@ -1,4 +1,3 @@
-
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.list import (IconLeftWidget, MDList, OneLineAvatarListItem,

@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = My Application
+title = Arhat
 
 # (str) Package name
 package.name = Arhat
@@ -46,10 +46,10 @@ requirements = python3,kivy,kivyMD,requests,requests,validate_email,webcolors,py
 #garden_requirements =
 
 # (str) Presplash of the application
-#presplash.filename = /home/lean/ArhatNative/images/logo.png
+presplash.filename = /home/lean/ArhatNative/images/logo.png
 
 # (str) Icon of the application
-#icon.filename = /home/lean/ArhatNative/images/logo.png
+icon.filename = /home/lean/ArhatNative/images/logo.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait

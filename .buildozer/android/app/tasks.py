@@ -39,23 +39,37 @@ class Content(BoxLayout):
         self.selected_color = None
         self.done_data = False
         self.page_date = task['page_date']
-        self.body = MDTextField(text=task['body'], size_hint_y=None)
+        self.body = MDTextField(
+            text=task['body'], 
+            size_hint_y=None,
+            )
         self.start_time_minutes = self.set_time(task['start_time'])
         self.end_time_minutes = self.set_time(task['end_time'])
-        self.start_time = Button(text=f"Start Time: {self.start_time_minutes}")
-        self.start_time.size_hint_y = None
-        self.start_time.height = 50
+        self.start_time = Button(
+            text=f"Start Time: {self.start_time_minutes}",
+            size_hint_y=None,
+            height=50
+            )
         self.start_time.bind(on_press=self.show_start_time_picker)
-        self.end_time = Button(text=f"End Time: {self.end_time_minutes}")
-        self.end_time.size_hint_y = None
-        self.end_time.height = 50
+        self.end_time = Button(
+            text=f"End Time: {self.end_time_minutes}", 
+            height=50, 
+            size_hint_y=None
+            )
         self.end_time.bind(on_press=self.show_end_time_picker)
         self.color = hex_to_rgb("#" + task['color'])
-        self.color_pick = Button(text="Change color", background_color=(self.color[0]/255, self.color[1]/255, self.color[2]/255, .5))
+        self.color_pick = Button(
+            text="Change color", 
+            background_color=(self.color[0]/255, self.color[1]/255, self.color[2]/255, .5),
+            size_hint_y=None,
+            height=50
+            )
         self.color_pick.bind(on_press=self.show_theme_picker)
-        self.color_pick.size_hint_y = None
-        self.color_pick.height = 50
-        self.frequency = MDTextField(size_hint_y=None, helper_text="Frequency", helper_text_mode="persistent")
+        self.frequency = MDTextField(
+            size_hint_y=None, 
+            helper_text="Frequency", 
+            helper_text_mode="persistent"
+            )
         if task['frequency']: 
             self.frequency.text=str(task['frequency'])
         if str(task['to_date']) == "None":
@@ -72,16 +86,18 @@ class Content(BoxLayout):
         self.done.bind(active=self.on_checkbox_active)
         self.freq_label = Label(text="Frequency", color=(0,0,0,1))
         self.task_description_label = Label(text="Task Description", color=(0,0,0,1))
-        self.add_widget(self.start_time)
-        self.add_widget(self.end_time)
-        self.add_widget(self.task_description_label)
-        self.add_widget(self.body)
-        self.add_widget(self.freq_label)
-        self.add_widget(self.frequency)
-        self.add_widget(self.to_date)
-        self.add_widget(self.done_label)
-        self.add_widget(self.done)
-        self.add_widget(self.color_pick)
+        [self.add_widget(getattr(self, attr)) for attr in [
+            start_time, 
+            end_time, 
+            task_description_label, 
+            freq_label, 
+            frequency, 
+            to_date, 
+            done_label, 
+            done, 
+            color_pick
+            ]
+        ]
         if str(task['to_date']) != "None" or task['frequency'] or task['exclude']:
             self.single_event_label = Label(text="Edit just this event?", color=(0,0,0,1))
             self.single_event = CheckBox()

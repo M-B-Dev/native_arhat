@@ -9,7 +9,6 @@ from kivymd.uix.list import (IconLeftWidget, MDList, OneLineAvatarListItem,
 from kivymd.uix.picker import MDDatePicker, MDTimePicker
 
 
-
 class NewTask(Screen):
     token = ObjectProperty(None)
     user_id = ObjectProperty(None)
@@ -67,7 +66,11 @@ class NewTask(Screen):
             self.end_time_minutes = (self.end_time_minutes.hour * 60) + self.end_time_minutes.minute
             self.start_time_minutes = (self.start_time_minutes.hour * 60) + self.start_time_minutes.minute
             if self.frequency.text:
-                frequency = int(self.frequency.text)
+                if self.frequency.text.isnumeric() is True:
+                    frequency = int(self.frequency.text)
+                else:
+                    self.frequency.text = "This must be a number"
+                    return None
             else:
                 frequency = None
             if self.end_date.text:

@@ -294,8 +294,10 @@ class Contacts(Screen):
         self.template_dialog.dismiss()
 
     def send_message(self, instance):
-        hed = {"Authorization": "Bearer " + self.token}
-        response = requests.post(
-            f"https://arhat.uk/api/send/{self.recipient}/{self.user_id}/{self.body.text}",
-            headers=hed,
-        )
+        if self.body.text and len(self.body.text) > 0:
+            hed = {"Authorization": "Bearer " + self.token}
+            msg = bin(int.from_bytes(self.body.text.encode(), "big"))
+            response = requests.post(
+                f"https://arhat.uk/api/send/{self.recipient}/{self.user_id}/{msg}",
+                headers=hed,
+            )

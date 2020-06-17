@@ -87,15 +87,15 @@ class Content(BoxLayout):
         self.freq_label = Label(text="Frequency", color=(0,0,0,1))
         self.task_description_label = Label(text="Task Description", color=(0,0,0,1))
         [self.add_widget(getattr(self, attr)) for attr in [
-            start_time, 
-            end_time, 
-            task_description_label, 
-            freq_label, 
-            frequency, 
-            to_date, 
-            done_label, 
-            done, 
-            color_pick
+            'start_time', 
+            'end_time', 
+            'task_description_label', 
+            'freq_label', 
+            'frequency', 
+            'to_date', 
+            'done_label', 
+            'done', 
+            'color_pick'
             ]
         ]
         if str(task['to_date']) != "None" or task['frequency'] or task['exclude']:
@@ -213,7 +213,11 @@ class ImageButton(ButtonBehavior, Image):
             start_minutes = (int(str(self.edit_task.content_cls.widg.start_time_minutes)[0:2])*60) + int(str(self.edit_task.content_cls.widg.start_time_minutes)[-2])
             end_minutes = (int(str(self.edit_task.content_cls.widg.end_time_minutes)[0:2])*60) + int(str(self.edit_task.content_cls.widg.end_time_minutes)[-2])
             frequency = self.edit_task.content_cls.widg.frequency.text
-            if not frequency:
+            if frequency and frequency.isnumeric() is False:
+                self.edit_task.dismiss()
+                self.show_edit_task()
+                return None
+            elif not frequency:
                 frequency = 0
             date_to = self.edit_task.content_cls.widg.date_to
             done = self.edit_task.content_cls.widg.done_data
@@ -263,11 +267,18 @@ class Tasks(Screen):
   
         
     def load_tasks(self, date=datetime.strftime(datetime.today(), "%d-%m-%Y"), height=None, width=None, manager=None):
+        self.delete_tasks()
         self.date = date
         if not width:
-            width = self.parent.width
+            if self.parent:
+                width = self.parent.width
+            else:
+                width = self.width
         if not height:
-            height = self.parent.height
+            if self.parent:
+                height = self.parent.height
+            else:
+                height = self.height
         if manager:
             self.manager = manager
         hed = {'Authorization': 'Bearer ' + self.token}
@@ -294,6 +305,12 @@ class Tasks(Screen):
         self.date_button.bind(on_press=self.show_date_picker)
         self.add_widget(self.date_button)
         self.manager.current = "Tasks"
+
+    def delete_tasks(self):
+        if self.children:
+            children = len(self.children)
+            for i in range(children):
+                self.remove_widget(self.children[0])
 
     def get_date(self, date):
         '''
